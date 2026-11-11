@@ -1,0 +1,42 @@
+name: Skill improvement
+description: Propose better guidance, a missing decision or scenario, or a new skill.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please read CONTRIBUTING.md and docs/architecture.md first, especially "one owner per topic".
+  - type: input
+    id: skill
+    attributes:
+      label: Skill concerned
+      description: An existing skill name, or "new skill".
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: What is missing or weak
+      description: Describe a real situation where the current guidance fell short.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: The decision criterion, scenario, anti-pattern or section you would add or change.
+    validations:
+      required: true
+  - type: textarea
+    id: ownership
+    attributes:
+      label: Ownership
+      description: Which skill owns this subject, and does the change stay inside that skill?
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: The proposed text is my own work and I can license it under MIT.
+          required: true
+        - label: The change does not push advanced patterns onto small applications.

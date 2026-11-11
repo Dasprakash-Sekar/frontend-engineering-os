@@ -1,0 +1,94 @@
+name: Bug report
+description: A skill gave wrong or poor guidance, activated when it should not have, or failed to load.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting. Please remove anything private (company names, internal URLs, secrets) from what you paste.
+        For security problems, do not open an issue. See SECURITY.md.
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill
+      options:
+        - project-architect
+        - build-frontend-app
+        - develop-frontend-feature
+        - migrate-frontend-app
+        - audit-frontend-quality
+        - react-internals
+        - frontend-architecture
+        - frontend-state-architecture
+        - frontend-resilience
+        - frontend-performance-engineering
+        - frontend-security-audit
+        - frontend-testing-strategy
+        - frontend-production-readiness
+        - frontend-engineering-principles
+        - Installation or packaging
+        - Not sure
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of problem
+      options:
+        - Incorrect or outdated guidance
+        - Skill activated when it should not have
+        - Skill did not activate when it should have
+        - Skill failed to load or install
+        - Contradiction between skills
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: asked
+    attributes:
+      label: What you asked
+      description: The request or command you gave.
+    validations:
+      required: true
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: feos-version
+    attributes:
+      label: FEOS version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: Installation method
+      options:
+        - Plugin
+        - Manual
+    validations:
+      required: true
+  - type: input
+    id: claude-version
+    attributes:
+      label: Claude Code version
+      description: Output of `claude --version`.
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+  - type: input
+    id: stack
+    attributes:
+      label: Project stack
+      description: React version, framework and build tool, if relevant.

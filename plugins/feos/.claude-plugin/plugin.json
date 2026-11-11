@@ -1,0 +1,23 @@
+{
+  "name": "feos",
+  "displayName": "FEOS - Frontend Engineering Operating System",
+  "version": "0.1.0",
+  "description": "Frontend engineering skills for Claude Code: five workflows (architect, build, feature, migrate, audit) backed by eight specialist references on React internals, architecture, state, resilience, performance, security, testing and production readiness.",
+  "author": {
+    "name": "Dasprakash-Sekar",
+    "url": "https://github.com/Dasprakash-Sekar"
+  },
+  "homepage": "https://github.com/Dasprakash-Sekar/frontend-engineering-os#readme",
+  "repository": "https://github.com/Dasprakash-Sekar/frontend-engineering-os",
+  "license": "MIT",
+  "keywords": [
+    "frontend",
+    "react",
+    "architecture",
+    "state-management",
+    "performance",
+    "security",
+    "testing",
+    "code-review"
+  ]
+}
