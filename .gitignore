@@ -1,0 +1,37 @@
+# Local-only list of terms the validator must never find in the repository
+.private-terms
+
+# Dependencies and build output (none are expected; listed defensively)
+node_modules/
+dist/
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Operating system
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local Claude Code state
+.claude/
+CLAUDE.local.md
+
+# Backups and temporary files
+*.bak
+*.tmp
+*.orig

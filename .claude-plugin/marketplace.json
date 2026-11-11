@@ -1,0 +1,17 @@
+{
+  "name": "frontend-engineering-os",
+  "description": "FEOS - Frontend Engineering Operating System: frontend engineering skills for Claude Code.",
+  "owner": {
+    "name": "Dasprakash-Sekar",
+    "url": "https://github.com/Dasprakash-Sekar"
+  },
+  "plugins": [
+    {
+      "name": "feos",
+      "source": "./plugins/feos",
+      "description": "Five frontend workflows and eight specialist engineering references for Claude Code.",
+      "category": "development",
+      "tags": ["frontend", "react", "architecture", "code-review"]
+    }
+  ]
+}

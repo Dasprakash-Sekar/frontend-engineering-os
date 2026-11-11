@@ -1,0 +1,56 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Repository validator
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/validate.mjs
+
+  manual-install:
+    name: Manual install (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install with the documented commands (macOS and Linux)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          export HOME="$RUNNER_TEMP/feos-home"
+          mkdir -p "$HOME"
+          mkdir -p ~/.claude/skills
+          cp -R plugins/feos/skills/. ~/.claude/skills/
+          count=$(find ~/.claude/skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')
+          echo "Installed skills: $count"
+          test "$count" = "14"
+          diff -r plugins/feos/skills ~/.claude/skills
+
+      - name: Install with the documented commands (Windows PowerShell)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $HOME_DIR = Join-Path $env:RUNNER_TEMP "feos-home"
+          New-Item -ItemType Directory -Force $HOME_DIR | Out-Null
+          $dest = Join-Path $HOME_DIR ".claude\skills"
+          New-Item -ItemType Directory -Force $dest | Out-Null
+          Copy-Item -Path "plugins\feos\skills\*" -Destination $dest -Recurse -Force
+          $count = (Get-ChildItem $dest -Directory | Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") }).Count
+          Write-Host "Installed skills: $count"
+          if ($count -ne 14) { exit 1 }
