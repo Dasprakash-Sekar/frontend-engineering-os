@@ -221,10 +221,15 @@ const extraTerms = existsSync(termsFile)
   ? read(termsFile).split(/\r?\n/).map((s) => s.trim()).filter((s) => s && !s.startsWith('#'))
   : [];
 const TEXT = /\.(md|mjs|js|json|ya?ml|txt|gitignore|gitattributes)$|^(LICENSE|\.gitignore|\.gitattributes)$/;
-const scanText = (label, text) => {
+// In commit messages, attribution trailers legitimately carry a contributor's own email.
+const TRAILER = /^\s*(co-authored-by|signed-off-by|reviewed-by|reported-by|helped-by):/i;
+const scanText = (label, text, { allowTrailerEmails = false } = {}) => {
   let hits = 0;
   text.split(/\r?\n/).forEach((line, i) => {
-    for (const [re, what] of PRIVATE) if (re.test(line)) { err(`${label}:${i + 1}: ${what}`); hits++; }
+    for (const [re, what] of PRIVATE) {
+      if (allowTrailerEmails && what === 'email address' && TRAILER.test(line)) continue;
+      if (re.test(line)) { err(`${label}:${i + 1}: ${what}`); hits++; }
+    }
     for (const term of extraTerms) if (line.toLowerCase().includes(term.toLowerCase())) { err(`${label}:${i + 1}: private term`); hits++; }
   });
   return hits;
@@ -245,9 +250,19 @@ if (!errors.some((e) => /path|email|token|key|private term/i.test(e))) {
 if (process.argv.includes('--git')) {
   const git = (...a) => execFileSync('git', a, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   try {
+    // Identities. A contributor's own name and email on their commits is their choice, so a
+    // non-noreply address is reported as a warning for the maintainer to recognize, not an error.
+    // An identity that matches a local private term (for example the maintainer's work identity)
+    // is an error: that is the leak this check exists to catch.
     const ids = git('log', '--all', '--format=%an <%ae>|%cn <%ce>').split('\n').filter(Boolean);
-    const bad = [...new Set(ids)].filter((l) => !l.split('|').every((p) => /<[^>]*@users\.noreply\.github\.com>$/.test(p.trim())));
-    bad.forEach((l) => err(`git history: identity is not a GitHub noreply address -> ${l}`));
+    const NOREPLY = /<[^>]*@users\.noreply\.github\.com>$|<noreply@github\.com>$/;
+    const people = [...new Set(ids.flatMap((l) => l.split('|').map((p) => p.trim())))];
+    for (const who of people) {
+      const term = extraTerms.find((t) => who.toLowerCase().includes(t.toLowerCase()));
+      if (term) err(`git history: commit identity matches a private term -> ${who}`);
+      else if (!NOREPLY.test(who)) warn(`git history: commit identity with a public email (confirm it is an outside contributor) -> ${who}`);
+    }
+    if (!extraTerms.length) warn('git history: no .private-terms file, so commit identities were not checked against private terms');
     const blobs = git('rev-list', '--all', '--objects').split('\n').filter((l) => l.includes(' '));
     let n = 0;
     for (const l of blobs) {
@@ -258,10 +273,10 @@ if (process.argv.includes('--git')) {
       n++;
       scanText(`history:${path}@${sha.slice(0, 7)}`, git('cat-file', '-p', sha));
     }
-    scanText('history:commit messages', git('log', '--all', '--format=%B'));
+    scanText('history:commit messages', git('log', '--all', '--format=%B'), { allowTrailerEmails: true });
     if (git('remote').trim()) warn(`git: remotes are configured (${git('remote').trim().split('\n').join(', ')})`);
     if (!errors.some((e) => e.startsWith('git history') || e.startsWith('history:'))) {
-      passed.push(`git history clean: ${ids.length} commits use noreply identities; ${n} historical blobs and all commit messages scanned`);
+      passed.push(`git history clean: ${ids.length} commits, ${people.length} identities, none matching a private term; ${n} historical blobs and all commit messages scanned`);
     }
   } catch (e) {
     err(`git history check failed: ${e.message.split('\n')[0]}`);

@@ -49,7 +49,7 @@ Public-release audit, every release:
 
 - [ ] `git status --ignored` shows no unintended files.
 - [ ] No private names, paths, email addresses or secrets in the tree or in history.
-- [ ] Commit author and committer identities are the intended public ones.
+- [ ] Commit author and committer identities are the intended public ones. The `--git` run lists every identity with a public email as a warning; confirm each is an outside contributor. Keep your own private names in a git-ignored `.private-terms` file (one term per line) so the validator fails if one appears in a commit identity or a file.
 - [ ] No content copied from sources that cannot be redistributed under MIT.
 
 After pushing:

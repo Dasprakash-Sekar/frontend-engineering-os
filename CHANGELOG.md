@@ -10,6 +10,10 @@ How versions are chosen for a project made of skill instructions is described in
 
 - `CODEOWNERS` file so the maintainer is requested as reviewer on every pull request.
 
+### Changed
+
+- `validate.mjs --git` no longer fails on outside contributors. A commit identity with a public email is now a warning; an identity matching a local private term is still an error. Attribution trailers in commit messages may carry an email address.
+
 ## [0.1.0] - 2026-11-11
 
 First public release.
