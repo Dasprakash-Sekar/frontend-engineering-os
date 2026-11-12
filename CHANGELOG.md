@@ -25,4 +25,4 @@ First public release.
 
 - Targets Claude Code only. Other Claude products and other agent platforms are untested.
 - Skill activation has been reviewed against the skill descriptions but not measured with automated evaluation runs.
-- Installation from the hosted GitHub repository is verified only after the first public push. See the test record in [docs/installation.md](docs/installation.md).
+- Installation from the hosted GitHub repository has been verified on Windows only. See the test record in [docs/installation.md](docs/installation.md).

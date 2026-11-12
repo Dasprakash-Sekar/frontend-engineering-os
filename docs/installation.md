@@ -165,10 +165,12 @@ What has actually been run, and what has not. Version 0.1.0.
 | Live session with the plugin loaded via `--plugin-dir`: a workflow invoked as `feos:<skill>` loaded `feos:frontend-engineering-principles` with no file permission granted | Passed | Windows 11, Claude Code 2.1.237 |
 | Live session with the manual layout (skills in a `.claude/skills` folder): a reference invoked without prefix loaded `frontend-engineering-principles` with no file permission granted | Passed | Windows 11, Claude Code 2.1.237 |
 | PowerShell install, repeat copy (update) and uninstall commands, run against a temporary home directory | Passed: 14 folders installed; a second copy left 14 files; uninstall removed only the 14 FEOS folders | Windows 11, Windows PowerShell 5.1 |
-| macOS and Linux copy commands | Passed under Git Bash on Windows, against a temporary home directory, with the result identical to the source. **Not run on real macOS or Linux** | Git Bash on Windows 11 |
-| Manual install on macOS, Linux and Windows runners | **Not yet run.** Defined in the `Validate` workflow; runs on the first push | GitHub Actions |
-| Plugin install from the **hosted GitHub repository** (`marketplace add Dasprakash-Sekar/frontend-engineering-os`) | **Not yet run.** Possible only after the repository is public | - |
-| Plugin update path between two published versions | **Not yet run.** Needs a second release | - |
+| macOS and Linux copy commands | Passed under Git Bash on Windows, against a temporary home directory, with the result identical to the source | Git Bash on Windows 11 |
+| Manual install commands on real macOS, Linux and Windows machines, plus the repository validator | Passed: 14 skills installed on each | GitHub Actions runners (`ubuntu-latest`, `macos-latest`, `windows-latest`), first run on `main` |
+| Plugin install from the **hosted GitHub repository** with the documented commands, using an isolated configuration directory: marketplace add, install, list, details showing Skills (14), marketplace update, plugin update, uninstall, marketplace remove. The installed copy contained only the manifest and the 14 skill folders, identical to the source | Passed | Windows 11, Claude Code 2.1.237 |
+| Plugin install from the hosted repository on macOS and Linux | **Not yet run** | - |
+| A live session using the copy installed from the hosted repository | **Not yet run.** Live sessions were run against the same files loaded with `--plugin-dir` | - |
+| Plugin update that actually moves between two published versions | **Not yet run.** Needs a second release; the update commands were run and reported "already at the latest version" | - |
 | Other Claude products and other agent platforms | **Not tested. No compatibility is claimed** | - |
 
 Maintainers update this table when a pending check is run.
