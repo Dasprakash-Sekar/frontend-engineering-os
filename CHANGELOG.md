@@ -6,6 +6,10 @@ How versions are chosen for a project made of skill instructions is described in
 
 ## [Unreleased]
 
+### Added
+
+- `CODEOWNERS` file so the maintainer is requested as reviewer on every pull request.
+
 ## [0.1.0] - 2026-11-11
 
 First public release.
